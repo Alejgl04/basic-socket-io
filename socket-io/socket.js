@@ -1,3 +1,4 @@
+const { Server } = require("socket.io");
 
 const checkCustomer = ( io ) => {
 
@@ -5,21 +6,26 @@ const checkCustomer = ( io ) => {
     console.log('Cliente Conectado !');
 
     //get messages
-    listenMessages( customer );
+    listenMessages( customer, io );
     //Desconnect
     offline( customer );
 
-
+    
   });
 }
 
 
 //listen messages
-const listenMessages = ( customer ) => {
+const listenMessages = ( customer, io = Server ) => {
 
   customer.on('message', ( payload ) => {
+
     console.log('mensaje recibido' , payload);
+    
+    io.emit( 'new-message',payload );
+  
   });
+
 
 }
 
@@ -31,6 +37,8 @@ const offline = ( customer ) => {
   });
 
 }
+
+
 
 
 
