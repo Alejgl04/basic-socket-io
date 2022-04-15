@@ -17,7 +17,7 @@ class UserList {
   updateUser( id, name ) {
     for( let user of this.list ) {
       if( user.id === id ) {
-        username.name = name;
+        user.name = name;
         break;
       }
     }
@@ -45,4 +45,6 @@ class UserList {
   }
 }
 
-module.exports = UserList;
+module.exports = {
+  UserList
+};
