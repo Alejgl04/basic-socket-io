@@ -23,6 +23,11 @@ app.use( cors({ origin: true, credentials: true }) )
 //LECTURA Y PARSEO DEL BODY
 app.use(express.json());  
 
+app.use((req, res, next) => {
+  req.io = io;
+  return next();
+});
+
 app.use('/', require('./routes/routes'));
 
 

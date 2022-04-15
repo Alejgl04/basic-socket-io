@@ -26,7 +26,6 @@ const checkCustomer = ( io ) => {
 
     //Desconnect
     offline( customer );
-
     
   });
 }

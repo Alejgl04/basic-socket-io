@@ -2,7 +2,6 @@ const { Router } = require('express');
 
 const router = Router();
 
-
 router.get('/messages', ( req = Request, res = Response ) => {
   
   return res.json({
@@ -11,12 +10,40 @@ router.get('/messages', ( req = Request, res = Response ) => {
   });
 });
 
-router.post('/messages', ( req = Request, res = Response ) => {
-  const data = req.body;
+router.post('/messages/', ( req = Request, res = Response ) => {
+  const content = req.body.messages;
+  const from = req.body.from;
+
+  const payload = {
+    content,
+    from
+  }
+  req.io.emit( 'new-message', payload );
+
   return res.json({
-    data,
     ok:true,
-    message: 'POST Todo bien!!'
+    content,
+    from,
+  });
+});
+
+router.post('/messages/:id', ( req = Request, res = Response ) => {
+  const content = req.body.messages;
+  const from = req.body.from;
+  const id   = req.params.id;
+
+  const payload = {
+    content,
+    from
+  }
+
+  req.io.in( id ).emit( 'private-message', payload );
+
+  return res.json({
+    ok:true,
+    content,
+    from,
+    id
   });
 });
 
