@@ -15,7 +15,7 @@ const checkCustomer = ( io ) => {
     console.log('Cliente Conectado !');
 
     //Connect customer
-    connectClient( customer );
+    connectClient( customer, io );
 
     //UsernameLogin
     listenUserLog( customer, io )
@@ -23,9 +23,10 @@ const checkCustomer = ( io ) => {
     //get messages
     listenMessages( customer, io );
 
+    getUsers( customer, io );
 
     //Desconnect
-    offline( customer );
+    offline( customer, io );
     
   });
 }
@@ -52,6 +53,8 @@ const listenUserLog = ( customer, io = Server ) => {
 
   customer.on('config-user', ( payload, callback = Function ) => {
     usersConnect.updateUser( customer.id, payload.name );
+    io.emit('active-users', usersConnect.getListUser() );
+
     callback({
       ok:true,
       message: `Usuario ${ payload.name } configurado...`
@@ -59,19 +62,27 @@ const listenUserLog = ( customer, io = Server ) => {
   });
 }
 
-const offline = ( customer ) => {
+const getUsers = ( customer, io = Server ) => {
+
+  customer.on('get-users', () => {
+    io.to( customer.id ).emit('active-users', usersConnect.getListUser() );
+  });
+}
+
+const offline = ( customer, io ) => {
   
   customer.on('disconnect', () => {
     console.log('Cliente Desconectado !')
-    usersConnect.removeUser(customer.id)
+    usersConnect.removeUser(customer.id);
+    io.emit('active-users', usersConnect.getListUser() );
+    
   });
 
 }
 
 
 
-
-
 module.exports = { 
-  checkCustomer
+  checkCustomer,
+  usersConnect
 }

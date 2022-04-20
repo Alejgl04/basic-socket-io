@@ -7,8 +7,8 @@ class User {
   sala = "";
   constructor( id = String ) {
     this.id = id;
-    this.name = 'no name';
-    this.sala = 'no sala';
+    this.name = 'no-name';
+    this.sala = 'no-sala';
   }
 
 }

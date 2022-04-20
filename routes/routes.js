@@ -1,5 +1,5 @@
-const { response } = require('express');
 const { Router } = require('express');
+const { connectClient, usersConnect } = require('../socket-io/socket');
 
 const router = Router();
 
@@ -48,6 +48,8 @@ router.post('/messages/:id', ( req = Request, res = Response ) => {
   });
 });
 
+/*Obtener usuarios por id*/
+
 router.get('/users', async( req = Request, res = Response) => {
   const clients  = (await req.io.fetchSockets()).map(socket => socket.id); 
   return res.json({
@@ -55,6 +57,20 @@ router.get('/users', async( req = Request, res = Response) => {
      clients 
    });
 });
+
+
+/*Obtener usuarios y sus nombres*/
+
+router.get('/users/detail', async( req = Request, res = Response) => {
+
+  return res.json({
+     ok:true,
+     clients: usersConnect.getListUser()
+   });
+});
+
+
+
 
 
 

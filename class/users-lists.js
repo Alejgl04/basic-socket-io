@@ -27,7 +27,7 @@ class UserList {
   }
 
   getListUser() {
-    return this.list;
+    return this.list.filter( user => user.name !== 'no-name');
   }
 
   getUserById( id ) {
