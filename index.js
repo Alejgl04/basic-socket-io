@@ -11,7 +11,8 @@ const { checkCustomer } = require('./socket-io/socket');
 
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:4200",
+    // origin: "http://localhost:4200",
+    origin: "https://game-of-the-year.netlify.app",
     methods: ["GET", "POST"]
   }
 });
