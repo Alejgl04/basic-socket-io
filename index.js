@@ -20,7 +20,7 @@ const io = new Server(server, {
 checkCustomer( io );
 
 // CONFIGURAR CORS
-app.use( cors({ origin: true, credentials: true }) )
+app.use( cors());
 
 //LECTURA Y PARSEO DEL BODY
 app.use(express.json());
