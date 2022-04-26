@@ -6,6 +6,7 @@ const app = express();
 const http = require('http');
 const server = http.createServer(app);
 const { Server } = require("socket.io");
+const { dbConnect } = require('./config/db');
 const { checkCustomer } = require('./socket-io/socket');
 
 const io = new Server(server, {
@@ -21,7 +22,10 @@ checkCustomer( io );
 app.use( cors({ origin: true, credentials: true }) )
 
 //LECTURA Y PARSEO DEL BODY
-app.use(express.json());  
+app.use(express.json());
+
+// BASE DE DATOS
+dbConnect();
 
 app.use((req, res, next) => {
   req.io = io;
