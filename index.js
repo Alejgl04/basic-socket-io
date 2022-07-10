@@ -34,6 +34,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/', require('./routes/routes'));
+app.use('/users', require('./routes/users'));
 
 
 server.listen(process.env.PORT, () => {
