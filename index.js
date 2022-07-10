@@ -35,6 +35,7 @@ app.use((req, res, next) => {
 
 app.use('/', require('./routes/routes'));
 app.use('/users', require('./routes/users'));
+app.use('/auth', require('./routes/auth'));
 
 
 server.listen(process.env.PORT, () => {

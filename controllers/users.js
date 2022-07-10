@@ -60,9 +60,20 @@ const createUsers = async( req, res = response ) => {
   });
 }
 
+const deleteUsers = async ( req, res = response ) => {
+  const id = req.params.id;
+  const user = await User.findByIdAndDelete( id )
+  res.json({
+    ok:true,
+    message:'Se ha eliminado el usuario exitosamente',
+    user,
+  });
+}
+
 module.exports = {
   getAllUsers,
   getUserById,
   createUsers,
+  deleteUsers
 };
 
