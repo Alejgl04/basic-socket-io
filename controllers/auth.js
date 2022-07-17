@@ -7,11 +7,11 @@ const { googleVerify } = require('../helpers/google-verify');
 const login = async ( req, res = response ) => {
 
   const { email, password } = req.body;
+  console.log(req.body);
 
   try {
 
     const user = await User.findOne({ email });
-    const checkPassword = bcryptjs.compareSync( password, user.password );
 
     if( !user ) {
       return res.status(400).json({
@@ -27,6 +27,8 @@ const login = async ( req, res = response ) => {
       });
     }
     //check the password
+    const checkPassword = bcryptjs.compareSync( password, user.password );
+
     if ( !checkPassword ) {
       return res.status(400).json({
         ok:false,
@@ -37,6 +39,7 @@ const login = async ( req, res = response ) => {
     const token = await generateJWT( user.id )
 
     res.json({
+      ok:true,
       user,
       token
     })
@@ -100,8 +103,42 @@ const googleSignIn = async ( req, res = response ) => {
 
 }
 
+const refreshTokenGet = async ( req, res = response ) => { 
+
+  const userRequest = req.user;
+  const token = await generateJWT( userRequest.id );
+
+  return res.json({
+    ok:true,
+    user:userRequest,
+    token
+  })
+
+}
+
+const refreshTokenPost = async ( req, res = response ) => { 
+  const token = req.header('x-token');
+  if( !token ) {
+    return res.status(401).json({
+      ok:false,
+      message: 'No hay token en la petición'
+    });
+  }
+  var { payload } = jwt.decode(token, {complete: true});
+  const user = await Usuario.findById( payload.uid );
+  const newToken = await generateJWT( payload.uid );
+
+  return res.json({
+    ok:true,
+    user,
+    token:newToken
+  })
+
+}
 
 module.exports = {
   login,
-  googleSignIn
+  googleSignIn,
+  refreshTokenGet,
+  refreshTokenPost
 }

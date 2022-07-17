@@ -55,6 +55,17 @@
           })
           .catch( console.warn )
         }
+        window.onload = function () {
+          google.accounts.id.initialize({
+            client_id: "736506785330-4gdh43dddg9bd1gjkohdfi1iu1puclr2.apps.googleusercontent.com",
+            callback: handleCredentialResponse
+          });
+          google.accounts.id.renderButton(
+            document.getElementById("buttonDiv"),
+            { theme: "outline", size: "large" }  // customization attributes
+          );
+          google.accounts.id.prompt(); // also display the One Tap dialog
+        }
 
         const button = document.getElementById('logout');
         button.onclick = () => {
