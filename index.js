@@ -8,7 +8,7 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const { dbConnect } = require('./config/db');
 const { checkCustomer } = require('./socket-io/socket');
-
+/**New Deployment */
 const io = new Server(server, {
   cors: {
     // origin: "http://localhost:4200",
